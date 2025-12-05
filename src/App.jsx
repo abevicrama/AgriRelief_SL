@@ -8,6 +8,8 @@ import AidMap from './components/Map/AidMap';
 import Dashboard from './components/Admin/Dashboard';
 import DatabaseSeeder from './DatabaseSeeder';
 import Navbar from './components/Layout/Navbar';
+import MyReports from './components/User/MyReports';
+import Contact from './components/Pages/Contact';
 
 // Protected Route Component
 const ProtectedRoute = ({ children, requiredRole }) => {
@@ -84,6 +86,14 @@ function App() {
                         }
                     />
                     <Route
+                        path="/my-reports"
+                        element={
+                            <ProtectedRoute requiredRole="farmer">
+                                <MyReports />
+                            </ProtectedRoute>
+                        }
+                    />
+                    <Route
                         path="/map"
                         element={
                             <ProtectedRoute>
@@ -96,6 +106,14 @@ function App() {
                         element={
                             <ProtectedRoute requiredRole="official">
                                 <Dashboard />
+                            </ProtectedRoute>
+                        }
+                    />
+                    <Route
+                        path="/contact"
+                        element={
+                            <ProtectedRoute>
+                                <Contact />
                             </ProtectedRoute>
                         }
                     />

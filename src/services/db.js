@@ -10,7 +10,8 @@ import {
     query,
     where,
     orderBy,
-    serverTimestamp
+    serverTimestamp,
+    deleteDoc
 } from 'firebase/firestore';
 
 // Collection References
@@ -70,6 +71,27 @@ export const updateReportStatus = async (id, status, isVerified = false) => {
         });
     } catch (error) {
         console.error("Error updating report status: ", error);
+        throw error;
+    }
+}
+
+
+export const getReportsByFarmerId = async (farmerId) => {
+    try {
+        const q = query(collection(db, REPORTS_COLLECTION), where("farmer_id", "==", farmerId));
+        const querySnapshot = await getDocs(q);
+        return querySnapshot.docs.map(doc => ({ report_id: doc.id, ...doc.data() }));
+    } catch (error) {
+        console.error("Error getting farmer reports: ", error);
+        throw error;
+    }
+};
+
+export const deleteReport = async (reportId) => {
+    try {
+        await deleteDoc(doc(db, REPORTS_COLLECTION, reportId));
+    } catch (error) {
+        console.error("Error deleting report: ", error);
         throw error;
     }
 };
